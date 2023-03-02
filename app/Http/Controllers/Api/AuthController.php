@@ -17,6 +17,7 @@ class AuthController extends Controller
                     'message' => 'Success Login',
                     'data' => $user,
                     'token' => $token,
+                    "status" => "LoggedIn"
                 ]);
             }
         } catch (\Throwable $th) {

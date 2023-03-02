@@ -11,7 +11,14 @@ function MyApp() {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
-                <PrivateRoute path='/dashboard' element={<Dashboard />}/>
+                <Route path="/dashboard" 
+                element={
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                }
+                />
+                
                 <Route path='*' element={<h1>404 Page not found</h1>} />
             </Routes>
         </BrowserRouter>

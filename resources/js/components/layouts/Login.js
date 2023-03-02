@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { useNavigate, Navigate} from 'react-router-dom';
-
+import { useNavigate, Navigate, useEF} from 'react-router-dom';
+import { useEffect } from 'react';
 const Login = (props) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -16,20 +16,22 @@ const Login = (props) => {
         password: password,
       })
       .then((response) => {
+        console.log(response);
         localStorage.setItem('user', JSON.stringify(response.data.data));
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('IsLoggedIn', "true");
-        setIsLoggedIn(true);
-        history('/dashboard')
+        localStorage.setItem('status', response.data.status);
+        history('/dashboard');
       })
       .catch((error) => {
-        setErrorMessage(error.response.data.message);
+        console.log(error);
       });
   };
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === "true";
-            if (isLoggedIn) {
-                return <Navigate to="/dashboard" />;
-            }
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('status') === "LoggedIn";
+    if (isLoggedIn) {
+    history("/dashboard");
+  };
+  }, [])
   return (
             <div>
                 <div className="login-page bg-light">
