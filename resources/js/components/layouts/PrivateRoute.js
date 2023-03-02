@@ -1,12 +1,15 @@
-import React from "react";
-import { Route, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Navigate, Route } from 'react-router-dom';
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-<Route {...rest} element={
-localStorage.getItem('token')
-? <Component {...rest} />
-: <Redirect to={{ pathname: '/login', state: { from: rest.location } }}/>
-} />
-);
+function PrivateRoute({ element: Component, allowedRoles, ...rest }) {
+  // contoh implementasi cek user role dari auth context
+  const userRole = 'admin';
+
+  if (!allowedRoles.includes(userRole)) {
+    return <Navigate to="/unauthorized" />;
+  }
+
+  return <Route {...rest} element={<Component />} />;
+}
 
 export default PrivateRoute;
