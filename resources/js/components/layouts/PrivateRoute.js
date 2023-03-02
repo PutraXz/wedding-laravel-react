@@ -1,15 +1,14 @@
-import React from 'react';
-import { Navigate, Route } from 'react-router-dom';
+import React from "react";
+import { Route, Navigate } from 'react-router-dom';
 
-function PrivateRoute({ element: Component, allowedRoles, ...rest }) {
-  // contoh implementasi cek user role dari auth context
-  const userRole = 'admin';
-
-  if (!allowedRoles.includes(userRole)) {
-    return <Navigate to="/unauthorized" />;
-  }
-
-  return <Route {...rest} element={<Component />} />;
+function PrivateRoute({ element: Element, ...props }) {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  
+    if (!isLoggedIn) {
+      return <Navigate to="/" replace />;
+    }
+  
+    return <Route element={<Element />} {...props} />;
 }
 
 export default PrivateRoute;
