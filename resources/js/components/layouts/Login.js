@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate} from 'react-router-dom';
 
 const Login = (props) => {
   const [email, setEmail] = React.useState('');
@@ -18,21 +18,18 @@ const Login = (props) => {
       .then((response) => {
         localStorage.setItem('user', JSON.stringify(response.data.data));
         localStorage.setItem('token', response.data.token);
-        const userLevel = response.data.data.level;
-        if (userLevel === 'admin') {
-          history('/admin');
-        } else if (userLevel === 'user') {
-          history('/user/dashboard');
-        } else {
-          history('/');
-        }
-        window.location.reload();
+        localStorage.setItem('IsLoggedIn', "true");
+        setIsLoggedIn(true);
+        history('/dashboard')
       })
       .catch((error) => {
         setErrorMessage(error.response.data.message);
       });
   };
-
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === "true";
+            if (isLoggedIn) {
+                return <Navigate to="/dashboard" />;
+            }
   return (
             <div>
                 <div className="login-page bg-light">

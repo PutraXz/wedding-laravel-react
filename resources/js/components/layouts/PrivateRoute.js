@@ -1,12 +1,14 @@
 import React from "react";
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-<Route {...rest} element={
-localStorage.getItem('token')
-? <Component {...rest} />
-: <Redirect to={{ pathname: '/login', state: { from: rest.location } }}/>
-} />
-);
+function PrivateRoute({ element: Element, ...props }) {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  
+    if (!isLoggedIn) {
+      return <Navigate to="/" replace />;
+    }
+  
+    return <Route element={<Element />} {...props} />;
+}
 
 export default PrivateRoute;
